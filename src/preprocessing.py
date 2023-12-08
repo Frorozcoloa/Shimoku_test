@@ -6,6 +6,7 @@ from .utils import create_report
 
 datasets = Path(__file__).resolve().parent.parent / "datasets"
 
+
 def read_dataset()->pd.DataFrame:
     """Reads the dataset from a given path.
 
@@ -25,7 +26,7 @@ def delete_uniques_columns(df:pd.DataFrame)->pd.DataFrame:
     Returns:
         pandas.DataFrame: The dataset without the columns with unique values.
     """
-    df = df.drop(columns=["Id", "First Name"], axis=1)
+    df = df.drop(columns=["Id"], axis=1)
     return df
 
 def convert_to_datetime(df:pd.DataFrame)->pd.DataFrame:
@@ -38,8 +39,8 @@ def convert_to_datetime(df:pd.DataFrame)->pd.DataFrame:
         pandas.DataFrame: The dataset with converted date columns.
     """
     df['Close Date'] = pd.to_datetime(df['Close Date'])
-    df['Open Date'] = pd.to_datetime(df['Open Date'])
-    df["Duration"] = (df["Close Date"] - df["Open Date"]).dt.days
+    df['Created Date'] = pd.to_datetime(df['Created Date'])
+    df["Duration"] = (df["Close Date"] - df["Created Date"]).dt.days
     return df
 
 def pre_proccesing_discont(df:pd.DataFrame)->pd.DataFrame:
@@ -51,8 +52,8 @@ def pre_proccesing_discont(df:pd.DataFrame)->pd.DataFrame:
     Returns:
         pandas.DataFrame: The dataset with preprocessed discount column.
     """
-    df['has_Discount_Code'] = ~df['Discount Code'].isnull()
-    df.drop(columns=['Discount Code'], inplace=True)
+    df['has_Discount_Code'] = ~df['Discount code'].isnull()
+    df.drop(columns=['Discount code'], inplace=True)
     return df
 
 def create_columns_null_values(df:pd.DataFrame)->pd.DataFrame:
@@ -118,6 +119,6 @@ def preprocessing(df:pd.DataFrame, path_output: Optional[Path] = None)->pd.DataF
     return df
 
         
-if __name__ == "__main__":
+def run():
     df = read_dataset()
     preprocessing(df)
