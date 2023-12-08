@@ -1,11 +1,8 @@
 from typing import Optional, Union
 from pathlib import Path
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.model_selection import train_test_split
+
+from .utils import create_report
 
 datasets = Path(__file__).resolve().parent.parent / "datasets"
 
@@ -81,9 +78,28 @@ def save_values(df, path: Union[str, Path] = None ):
     if path is None:
         path = datasets / "processed" / "offer.csv"
     df.to_csv(path, index=False)
+
+def changes_columns(df:pd.DataFrame)->pd.DataFrame:
+    """Changes the names of the columns.
+
+    Args:
+        df (pandas.DataFrame): The dataset.
+
+    Returns:
+        pandas.DataFrame: The dataset with the new names of the columns.
+    """
+    comuns = df.columns
+    rename = {}
+    for com in comuns:
+        new_com = com.lower().replace(' ', '_')
+        rename[com] = new_com
+    df.rename(columns=rename, inplace=True)
+    return df
+
+
     
 
-def preprocessing(df:pd.DataFrame, path_output = Optional[Path])->pd.DataFrame:
+def preprocessing(df:pd.DataFrame, path_output: Optional[Path] = None)->pd.DataFrame:
     """Preprocesses the dataset.
 
     Args:
@@ -96,8 +112,12 @@ def preprocessing(df:pd.DataFrame, path_output = Optional[Path])->pd.DataFrame:
     df = convert_to_datetime(df)
     df = pre_proccesing_discont(df)
     df = create_columns_null_values(df)
+    df = changes_columns(df)
     save_values(df, path_output)
+    create_report(df, "offer")
     return df
 
         
-        
+if __name__ == "__main__":
+    df = read_dataset()
+    preprocessing(df)
