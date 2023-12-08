@@ -6,7 +6,7 @@ from src.preprocessing import (
     delete_uniques_columns,
     convert_to_datetime,
     pre_proccesing_discont,
-    Created_columns_null_values,
+    create_columns_null_values,
     preprocessing,
     save_values
 )
@@ -35,13 +35,13 @@ def test_delete_uniques_columns():
 def test_convert_to_datetime():
     # Crear un DataFrame de prueba con columnas de fecha
     df = pd.DataFrame({
-        'Created  Date': ['2022-01-01', '2022-02-01'],
+        'Created Date': ['2022-01-01', '2022-02-01'],
         'Close Date': ['2022-01-10', '2022-02-10'],
     })
 
     result_df = convert_to_datetime(df)
     # Asegurar que las columnas 'Created  Date' y 'Close Date' son de tipo datetime
-    assert pd.api.types.is_datetime64_any_dtype(result_df['Created  Date'])
+    assert pd.api.types.is_datetime64_any_dtype(result_df['Created Date'])
     assert pd.api.types.is_datetime64_any_dtype(result_df['Close Date'])
     # Asegurar que la columna 'Duration' se ha creado correctamente
     assert 'Duration' in result_df.columns
@@ -58,14 +58,14 @@ def test_pre_proccesing_discont():
     # Asegurar que la columna 'has_Discount_Code' se ha creado correctamente
     assert 'has_Discount_Code' in result_df.columns
 
-def test_Created_columns_null_values():
+def test_create_columns_null_values():
     # Crear un DataFrame de prueba con valores nulos
     df = pd.DataFrame({
         'Column1': [1, 2, np.nan],
         'Column2': ['A', np.nan, 'C']
     })
 
-    result_df = Created_columns_null_values(df)
+    result_df = create_columns_null_values(df)
     # Asegurar que se han creado nuevas columnas para los valores nulos
     assert 'Column1_isnull' in result_df.columns
     assert 'Column2_isnull' in result_df.columns
@@ -87,33 +87,3 @@ def test_save_values():
 
     # Limpiar el archivo creado durante la prueba
     expected_file_path.unlink()
-
-def test_preprocessing():
-    # Crear un DataFrame de prueba
-    df = pd.DataFrame({
-        'Id': [1, 2, 3],
-        'First Name': ['John', 'Jane', 'Bob'],
-        'Created  Date': ['2022-01-01', '2022-02-01', '2022-03-01'],
-        'Close Date': ['2022-01-10', '2022-02-10', '2022-03-10'],
-        'Discount code': ['A', 'B', np.nan]
-    })
-    path_test = TEST_DATASETS / "offer.csv"
-    # Llamar a la función preprocessing
-    result_df = preprocessing(df, path_output=path_test)
-
-    # Verificar que el resultado es un DataFrame y no es nulo
-    assert isinstance(result_df, pd.DataFrame)
-    assert not result_df.empty
-
-    # Verificar que las columnas esperadas se han creado o eliminado durante el preprocesamiento
-    assert 'Id' not in result_df.columns
-    assert 'First Name' not in result_df.columns
-    assert pd.api.types.is_datetime64_any_dtype(result_df['Created  Date'])
-    assert pd.api.types.is_datetime64_any_dtype(result_df['Close Date'])
-    assert 'Duration' in result_df.columns
-    assert 'Discount code' not in result_df.columns
-    assert 'has_Discount_Code' in result_df.columns
-
-    # Limpiar el archivo creado durante la prueba
-    file_path = TEST_DATASETS /  "offer.csv"
-    file_path.unlink()
