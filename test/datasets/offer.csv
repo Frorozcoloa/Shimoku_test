@@ -1,4 +1,0 @@
-first_name,created_date,close_date,duration,has_discount_code
-John,2022-01-01,2022-01-10,9,True
-Jane,2022-02-01,2022-02-10,9,True
-Bob,2022-03-01,2022-03-10,9,False
