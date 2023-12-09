@@ -44,7 +44,7 @@ def test_preprocesing_city():
 def test_preprocessing_acquisition_campaign():
     # Crear un DataFrame de prueba con la columna 'Acquisition campaign'
     df = pd.DataFrame({
-        'Acquisition campaign': ['VirtualMeetups', 'EducationExpo', 'Other']
+        'Acquisition Campaign': ['VirtualMeetups', 'EducationExpo', 'Other']
     })
 
     # Llamar a la función preprocessing_acquisition_campaign
@@ -60,7 +60,7 @@ def test_preprocessing_acquisition_campaign():
 def test_preprocesing_use_case():
     # Crear un DataFrame de prueba con la columna 'Use case'
     df = pd.DataFrame({
-        'Use case': ['Corporate ', 'eventes', 'Other']
+        'Use Case': ['Corporate ', 'eventes', 'Other']
     })
 
     # Llamar a la función preprocesing_use_case
@@ -92,7 +92,7 @@ def test_preprocessing_source():
 def test_preprocessing_created_date():
     # Crear un DataFrame de prueba con la columna 'Created date'
     df = pd.DataFrame({
-        'Created date': ['2022-01-01', '2022-02-01']
+        'Created Date': ['2022-01-01', '2022-02-01']
     })
 
     # Llamar a la función preprocessing_created_date
