@@ -70,6 +70,20 @@ def pre_proccesing_use_case(df:pd.DataFrame)->pd.DataFrame:
     df.drop(columns=["Use Case"], inplace=True)
     return df
 
+def preprocessing_pain(df:pd.DataFrame)->pd.DataFrame:
+    """Preprocesses the pain column.
+
+    Args:
+        df (pandas.DataFrame): The dataset.
+
+    Returns:
+        pandas.DataFrame: The dataset with preprocessed pain column.
+    """
+    major = ["operations"]
+    df["pain"] = df["Pain"].isin(major)
+    df.drop(columns=["Pain"], inplace=True)
+    return df
+
 
 def save_values(df, path: Union[str, Path] = None ):
     """Saves the preprocessed dataset.
@@ -81,10 +95,6 @@ def save_values(df, path: Union[str, Path] = None ):
         path = datasets / "processed" / "offer.csv"
     df.to_csv(path, index=False)
 
-
-
-
-    
 
 def preprocessing(df:pd.DataFrame, path_output: Optional[Path] = None)->pd.DataFrame:
     """Preprocesses the dataset.
@@ -99,6 +109,7 @@ def preprocessing(df:pd.DataFrame, path_output: Optional[Path] = None)->pd.DataF
     df = convert_to_datetime(df)
     df = pre_proccesing_discont(df)
     df = pre_proccesing_use_case(df)
+    df = preprocessing_pain(df)
     df = changes_columns(df)
     save_values(df, path_output)
     create_report(df, "offer")
