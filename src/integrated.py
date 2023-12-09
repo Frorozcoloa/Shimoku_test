@@ -37,23 +37,9 @@ def preprocessing_acquisition_campaign(df):
     Returns:
         pandas.DataFrame: The dataset with preprocessed Acquisition campaign column.
     """
-    major_values = ["VirtualMeetups", "EducationExpo", "TradeShow"]
-    df["acquisition_campaign"] = df["Acquisition Campaign"].apply(lambda x: x if x in major_values else "Other")
+    
+    df["has_acquisition_campaign"] = ~df["Acquisition Campaign"].isnull()
     df.drop(columns=["Acquisition Campaign"], inplace=True)
-    return df
-
-def preprocesing_use_case(df)->pd.DataFrame:
-    """Preprocesses the Use case column.
-
-    Args:
-        df (pandas.DataFrame): The dataset.
-
-    Returns:
-        pandas.DataFrame: The dataset with preprocessed Use case column.
-    """
-    major_values = ["Corporate Events"]
-    df["use_case"] = df["Use Case"].apply(lambda x: x if x in major_values else "Other")
-    df.drop(columns=["Use Case"], inplace=True)
     return df
 
 def preprocessing_source(df:pd.DataFrame)->pd.DataFrame:
@@ -86,10 +72,9 @@ def run():
     """Preprocesses the dataset and saves it in the processed folder.
     """
     df = read_datasets_leads()
-    df = df[["Id", "City", "Acquisition Campaign", "Use Case", "Source", "Created Date"]]
+    df = df[["Id", "City", "Acquisition Campaign", "Source", "Created Date"]]
     df = preprocesing_city(df)
     df = preprocessing_acquisition_campaign(df)
-    df = preprocesing_use_case(df)
     df = preprocessing_source(df)
     df = preprocessing_created_date(df)
     df = changes_columns(df)

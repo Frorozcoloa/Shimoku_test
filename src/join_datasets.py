@@ -49,8 +49,8 @@ def merge_datasets(df_lead:pd.DataFrame, df_offer:pd.DataFrame)->pd.DataFrame:
 
 def  preprocessing_close_date(df:pd.DataFrame)->pd.DataFrame:
     df = df.drop(columns=["close_date"])
+    df = df.drop(columns=["loss_reason", "loss_reason_isnull"])
     return df
-    
 
 def run():
     df_offer = read_dataset_offer()
