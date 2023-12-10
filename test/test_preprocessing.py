@@ -1,6 +1,5 @@
-from pathlib import Path
-import pandas as pd
-import numpy as np
+import sys
+sys.path.append("..")
 from src.preprocessing import (
     read_dataset,
     delete_uniques_columns,
@@ -10,80 +9,44 @@ from src.preprocessing import (
     preprocessing,
     save_values
 )
-TEST_DATASETS = Path(__file__).resolve().parent / "datasets"
+import pandas as pd
+import pytest
+from your_module import read_datasets_leads, preprocesing_city, preprocessing_acquisition_campaign, preprocessing_source, preprocessing_created_date, run
 
-def test_read_dataset():
-    # Puedes cambiar la ruta del archivo según tu configuración
-    df = read_dataset()
-    assert isinstance(df, pd.DataFrame)
-    assert not df.empty
-
-def test_delete_uniques_columns():
-    # Crear un DataFrame de prueba
-    df = pd.DataFrame({
+@pytest.fixture
+def sample_leads_df():
+    # Puedes crear un DataFrame de ejemplo para tus pruebas
+    return pd.DataFrame({
         'Id': [1, 2, 3],
-        'First Name': ['John', 'Jane', 'Bob'],
-        'Other Column': ['A', 'B', 'C']
+        'City': ['City1', 'City2', None],
+        'Acquisition Campaign': ['Campaign1', None, 'Campaign3'],
+        'Source': ['Source1', 'Source2', 'Source3'],
+        'Created Date': ['2022-01-01', '2022-02-02', '2022-03-03']
     })
 
-    result_df = delete_uniques_columns(df)
-    # Asegurar que las columnas 'Id' y 'First Name' se han eliminado
-    assert 'Id' not in result_df.columns
-    # Asegurar que otras columnas se mantienen
-    assert 'Other Column' in result_df.columns
+def test_read_datasets_leads(sample_leads_df):
+    df = read_datasets_leads()
+    assert isinstance(df, pd.DataFrame)
+    assert not df["Id"].isnull().any()  # Asegurar que no hay valores nulos en la columna "Id"
 
-def test_convert_to_datetime():
-    # Crear un DataFrame de prueba con columnas de fecha
-    df = pd.DataFrame({
-        'Created Date': ['2022-01-01', '2022-02-01'],
-        'Close Date': ['2022-01-10', '2022-02-10'],
-    })
+def test_preprocesing_city(sample_leads_df):
+    df = preprocesing_city(sample_leads_df)
+    assert "has_city" in df.columns
+    assert all(isinstance(value, bool) for value in df["has_city"])
 
-    result_df = convert_to_datetime(df)
-    # Asegurar que las columnas 'Created  Date' y 'Close Date' son de tipo datetime
-    assert pd.api.types.is_datetime64_any_dtype(result_df['Created Date'])
-    assert pd.api.types.is_datetime64_any_dtype(result_df['Close Date'])
-    # Asegurar que la columna 'Duration' se ha creado correctamente
-    assert 'Duration' in result_df.columns
+def test_preprocessing_acquisition_campaign(sample_leads_df):
+    df = preprocessing_acquisition_campaign(sample_leads_df)
+    assert "has_acquisition_campaign" in df.columns
+    assert all(isinstance(value, bool) for value in df["has_acquisition_campaign"])
 
-def test_pre_proccesing_discont():
-    # Crear un DataFrame de prueba con la columna 'Discount code'
-    df = pd.DataFrame({
-        'Discount code': ['A', np.nan, 'B']
-    })
+def test_preprocessing_source(sample_leads_df):
+    df = preprocessing_source(sample_leads_df)
+    assert "source" in df.columns
+    assert all(value in df["source"].unique() for value in sample_leads_df["Source"])
 
-    result_df = pre_proccesing_discont(df)
-    # Asegurar que la columna 'Discount code' se ha eliminado
-    assert 'Discount code' not in result_df.columns
-    # Asegurar que la columna 'has_Discount_Code' se ha creado correctamente
-    assert 'has_Discount_Code' in result_df.columns
+def test_preprocessing_created_date(sample_leads_df):
+    df = preprocessing_created_date(sample_leads_df)
+    assert "created_date" in df.columns
+    assert pd.api.types.is_datetime64_ns_dtype(df["created_date"])
 
-def test_create_columns_null_values():
-    # Crear un DataFrame de prueba con valores nulos
-    df = pd.DataFrame({
-        'Column1': [1, 2, np.nan],
-        'Column2': ['A', np.nan, 'C']
-    })
 
-    result_df = create_columns_null_values(df)
-    # Asegurar que se han creado nuevas columnas para los valores nulos
-    assert 'Column1_isnull' in result_df.columns
-    assert 'Column2_isnull' in result_df.columns
-
-def test_save_values():
-    # Crear un DataFrame de prueba
-    df = pd.DataFrame({
-        'Column1': [1, 2, 3],
-        'Column2': ['A', 'B', 'C']
-    })
-
-    # Llamar a la función save_values
-    path = TEST_DATASETS / "offer.csv"
-    save_values(df, path=path)
-
-    # Verificar si el archivo CSV fue creado en la ubicación esperada
-    expected_file_path = TEST_DATASETS / "offer.csv"
-    assert expected_file_path.is_file()
-
-    # Limpiar el archivo creado durante la prueba
-    expected_file_path.unlink()

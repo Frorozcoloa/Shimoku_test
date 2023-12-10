@@ -1,5 +1,7 @@
 import pandas as pd
 import pytest
+import sys
+sys.path.append("..")
 from src.join_datasets import read_dataset_offer, read_dataset_leads, merge_datasets, preprocessing_close_date, run
 
 @pytest.fixture

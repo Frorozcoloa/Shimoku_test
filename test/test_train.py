@@ -1,5 +1,7 @@
 import pandas as pd
 import pytest
+import sys
+sys.path.append("..")
 from src.train import read_dataset, crate_colums, convert_to_categorical, split_datasets, train_model, tuned_model, evaluted_model, upload_graphics, calculated_auc, test_evaluated, get_score, run
 
 @pytest.fixture

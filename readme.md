@@ -134,4 +134,37 @@ Todo el análisis e información que incontraba, lo llevaba en un tableró de mi
 
 ## Pipelines de preprocesamiento
 
-Dentro de de los notes del 0-1 al 0-3 fue el análisis
+Dentro de la estructura del proyecto, se han diseñado cuatro pipelines que siguen el concepto ETL (Extract, Transform, Load). Cada uno de estos pipelines se encarga de manejar una etapa específica del proceso, garantizando así la modularidad y la flexibilidad en la ejecución del flujo de trabajo. Los pipelines se encuentran organizados en la carpeta "src" del proyecto, como se detalla a continuación:
+
+```
+
+└── 📁src
+    └── integrated.py
+    └── join_datasets.py
+    └── preprocessing.py
+    └── train.py
+    └── utils.py
+```
+
+
+1. **preprocessing.py:** Este pipeline se encarga de realizar el preprocesamiento del dataset "offers.csv". Lee el conjunto de datos desde la ruta "datasets/raw/offers.csv" y guarda la versión transformada en "datasets/processed/offers.csv". Aquí se aplican las distintas transformaciones y manipulaciones de variables necesarias para preparar los datos para el entrenamiento del modelo.
+2. **integrate_datasets.py:** Este pipeline se enfoca en el preprocesamiento del dataset "lead.csv". Similar al pipeline de "preprocessing.py", toma el dataset desde "datasets/raw/lead.csv" y guarda la versión transformada en "datasets/processed/lead.csv". Se aplican las transformaciones específicas a este conjunto de datos.
+3. **join_datasets.py:** Este pipeline se encarga de la integración de los dos datasets preprocesados, "offers.csv" y "lead.csv". Lee ambos conjuntos de datos desde sus rutas procesadas respectivas y los une en un único dataset. El dataset integrado se guarda en "datasets/processed/integrated_dataset.csv".
+4. **train_model.py:** Este pipeline representa la etapa de entrenamiento del modelo. Utiliza el dataset integrado generado por el pipeline anterior y realiza el entrenamiento del modelo. Los modelos entrenados se almacenan para su uso posterior en el proceso de predicción.
+
+Esta organización modular y la ubicación de los datasets en carpetas específicas facilitan la integración del proyecto con administradores de tareas como Apache Airflow o prefect, permitiendo la automatización y programación del flujo de trabajo. Además, la estructura del proyecto facilita su mantenimiento y escalabilidad a medida que se incorporan más funciones y se expande el alcance del proyecto.
+
+Cada uno de los pipelines anteriormente mencionados crea automáticamente un informe que se almacena en la carpeta "reports".
+
+
+```
+
+└── 📁reports
+
+    └── integrated.html
+
+    └── leads.html
+
+    └── offer.html
+
+```
