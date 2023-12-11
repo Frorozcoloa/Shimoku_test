@@ -79,5 +79,8 @@ def run():
     df = preprocessing_created_date(df)
     df = changes_columns(df)
     #df = create_columns_null_values(df)
-    create_report(df, "leads")
+    file_name = create_report(df, "leads")
     df.to_csv(datasets / "processed" / "leads.csv", index=False)
+    return file_name
+
+

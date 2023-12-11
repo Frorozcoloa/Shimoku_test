@@ -10,11 +10,7 @@ from pathlib import Path
 import mlflow
 import os
 
-from dotenv import load_dotenv
 
-load_dotenv()
-
-mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:8084"))
 
 datasets = Path(__file__).resolve().parent.parent / "datasets"
 
@@ -30,7 +26,9 @@ def read_dataset() -> pd.DataFrame:
     path = datasets / "processed" / "integrated.csv"
     df = pd.read_csv(path)
     df["duration"] = df["duration"].astype(float)
-    return df
+    idx = df["id"]
+    df = df.drop(columns=["id"])
+    return df, idx
 
 def crate_colums(df):
     """Creates columns for the categorical columns.
@@ -84,7 +82,7 @@ def train_model(df_train):
         pandas.DataFrame: The model.
     """
     clf = setup(data=df_train, target='status', session_id=42, log_experiment=True, experiment_name='experiment')
-    best_model = compare_models(sort='AUC')
+    best_model = create_model('lightgbm')
     return best_model
 
 def tuned_model(best_model):
@@ -159,24 +157,34 @@ def test_evaluated(best_model, df_test):
         for metric, value in metrics_dict.items():
             mlflow.log_metric(class_or_avg + '_' + metric,value)
 
-def get_score(best_model, df_test):
+def get_score(best_model, df_test, idx):
     predictions_proba = predict_model(best_model, data=df_test, raw_score=True)
     predction_score = predictions_proba['prediction_score_1']
+    predictions_proba["id"] = idx
     predction_score.to_csv('score.csv', index=False)
+    predictions_proba.to_csv(datasets/"predictions"/"offers_with_predictions.csv", index=False) 
+
+def get_importance_features(best_model):
+    importance = best_model.feature_importances_
+    features = best_model.feature_name_
+    df = pd.DataFrame({"features": features, "importance": importance})
+    df = df.sort_values(by="importance", ascending=False)
+    df.to_csv(datasets/"predictions"/"importance_features.csv", index=False)
     
 def run():
-    df = read_dataset()
+    df, idx = read_dataset()
     df, values = convert_to_categorical(df)
     with mlflow.start_run():
         mlflow.log_params(values)
         df_train, df_test = split_datasets(df)
         best_model = train_model(df_train)
         best_model = tuned_model(best_model)
+        get_importance_features(best_model)
         evaluted_model()
         test_evaluated(best_model, df_test)
         final_rf = finalize_model(best_model)
         save_model(final_rf, 'model')
-        get_score(final_rf, df)
+        get_score(final_rf, df,idx)
         mlflow.end_run()
     
     

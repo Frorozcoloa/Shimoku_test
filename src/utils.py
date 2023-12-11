@@ -16,6 +16,7 @@ def create_report(df:pd.DataFrame, name_report:str)->None:
     file_name = name_report + '.html'
     file_path = FILE_REPORTS / file_name
     profile.to_file(file_path)
+    return file_path
     
 def changes_columns(df:pd.DataFrame)->pd.DataFrame:
     """Changes the names of the columns.
@@ -48,3 +49,5 @@ def create_columns_null_values(df:pd.DataFrame)->pd.DataFrame:
         name_new_column = name_new_column.replace(' ', '_')
         df[column + '_isnull'] = df[column].isnull()
     return df
+
+

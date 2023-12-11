@@ -43,7 +43,7 @@ def merge_datasets(df_lead:pd.DataFrame, df_offer:pd.DataFrame)->pd.DataFrame:
     df = pd.merge(df_offer, df_lead, left_on="id", right_on="lead_id", how="left")
     df_lead = df_lead.drop(columns=['lead_id', 'lead_created_date'])
     df["duration_created"] = (pd.to_datetime(df["created_date"]) - pd.to_datetime(df["lead_created_date"]))/np.timedelta64(1, 'D')
-    df = df.drop(columns=['lead_id', 'id', 'lead_created_date', 'created_date'])
+    df = df.drop(columns=['lead_id', 'lead_created_date', 'created_date'])
     #colums_lead = ["lead_has_city", "lead_acquisition_campaign", "lead_use_case", "lead_source"]
     return df
 
@@ -58,6 +58,6 @@ def run():
     df = merge_datasets(df_lead, df_offer)
     df = create_columns_null_values(df)
     df = preprocessing_close_date(df)
-    create_report(df, 'integrated')
+    file_name = create_report(df, 'integrated')
     df.to_csv(datasets / "processed" / "integrated.csv", index=False)
-    return df
+    return file_name

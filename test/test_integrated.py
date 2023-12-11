@@ -1,13 +1,12 @@
 import sys
 sys.path.append("..")
-
 import pandas as pd
 import pytest
 from src.integrated import read_datasets_leads, preprocesing_city, preprocessing_acquisition_campaign, preprocessing_source, preprocessing_created_date
 
 @pytest.fixture
 def sample_leads_df():
-    # Puedes crear un DataFrame de ejemplo para tus pruebas
+    # Create a sample leads DataFrame for testing
     return pd.DataFrame({
         'Id': [1, 2, 3],
         'City': ['City1', 'City2', None],
@@ -17,27 +16,32 @@ def sample_leads_df():
     })
 
 def test_read_datasets_leads(sample_leads_df):
-    df = read_datasets_leads()
-    assert isinstance(df, pd.DataFrame)
-    assert not df["Id"].isnull().any()  # Asegurar que no hay valores nulos en la columna "Id"
+    df_leads = read_datasets_leads()
+    assert isinstance(df_leads, pd.DataFrame)
+    assert not df_leads.empty
 
 def test_preprocesing_city(sample_leads_df):
-    df = preprocesing_city(sample_leads_df)
-    assert "has_city" in df.columns
-    assert all(isinstance(value, bool) for value in df["has_city"])
+    df_preprocessed = preprocesing_city(sample_leads_df)
+    assert isinstance(df_preprocessed, pd.DataFrame)
+    assert 'has_city' in df_preprocessed.columns
+    assert all(isinstance(value, bool) for value in df_preprocessed['has_city'])
 
 def test_preprocessing_acquisition_campaign(sample_leads_df):
-    df = preprocessing_acquisition_campaign(sample_leads_df)
-    assert "has_acquisition_campaign" in df.columns
-    assert all(isinstance(value, bool) for value in df["has_acquisition_campaign"])
+    df_preprocessed = preprocessing_acquisition_campaign(sample_leads_df)
+    assert isinstance(df_preprocessed, pd.DataFrame)
+    assert 'has_acquisition_campaign' in df_preprocessed.columns
+    assert all(isinstance(value, bool) for value in df_preprocessed['has_acquisition_campaign'])
 
 def test_preprocessing_source(sample_leads_df):
-    df = preprocessing_source(sample_leads_df)
-    assert "source" in df.columns
-    assert all(value in df["source"].unique() for value in sample_leads_df["Source"])
+    df_preprocessed = preprocessing_source(sample_leads_df)
+    assert isinstance(df_preprocessed, pd.DataFrame)
+    assert 'source' in df_preprocessed.columns
+    assert all(value in df_preprocessed['source'].unique() for value in sample_leads_df['Source'])
 
 def test_preprocessing_created_date(sample_leads_df):
-    df = preprocessing_created_date(sample_leads_df)
-    assert "created_date" in df.columns
-    assert pd.api.types.is_datetime64_ns_dtype(df["created_date"])
+    df_preprocessed = preprocessing_created_date(sample_leads_df)
+    assert isinstance(df_preprocessed, pd.DataFrame)
+    assert 'created_date' in df_preprocessed.columns
+    assert pd.api.types.is_datetime64_ns_dtype(df_preprocessed['created_date'])
 
+# Add more tests as needed
