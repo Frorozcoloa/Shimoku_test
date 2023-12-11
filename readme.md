@@ -301,23 +301,28 @@ Este enfoque integral garantizará no solo la implementación exitosa del modelo
 
 # Vista del usario final
 
-Al final el usario verá un dashboard con metadatos e información de la predición de Shimoku.
+Tener un dashboard que presente los datos finales del modelo es un recurso invaluable para el equipo comercial, brindándoles claridad y entendimiento sobre los resultados de las predicciones. Esto les permite identificar tendencias, patrones y comportamientos del mercado o clientes, lo que es esencial para ajustar estrategias comerciales y tácticas de venta con mayor precisión.
 
-al principio el usuario va a ver las predicciones positivas totales
+En el contexto de Shimoku, esta herramienta proporciona una plataforma robusta para la visualización de datos finales del modelo. Permite al equipo comercial interpretar fácilmente los insights generados, respaldando la toma de decisiones informadas y estratégicas.
+
+Ahora, respecto a MLOps, su importancia radica en la capacidad de actualizar constantemente estos datos finales. La plataforma de MLOps, integrada en Shimoku, desempeña un papel crucial. Al mantener los datos actualizados en tiempo real a medida que se entrenan nuevos modelos, se asegura que el equipo comercial cuente con información precisa y relevante en todo momento.
+
+Es por eso que se decidió enfocar el dashboard en mostrar únicamente la información final del modelo. Al destacar la importancia de ciertas características, se simplifica la visualización para el equipo comercial, centrándose en los aspectos más relevantes y evitando abrumar con detalles técnicos o outputs complejos de los pipelines.
+
+Al principio el usario verá las clases positivas predichas
 
 ![1702323971645](image/readme/1702323971645.png)
 
-Una gráfica de pie sobre la información de las etiquetas predichas
+Con la gráfica de pie, el equipo comercial puede tener una comprensión rápida y efectiva de cómo se distribuyen las predicciones del modelo en términos de etiquetas.
 
 ![1702324016908](image/readme/1702324016908.png)
 
-
-Una tabla con el id, la predicción y la variable más importante
+Una tabla con el ID del cliente, la predicción y la variable más importante es una herramienta valiosa para el equipo comercial, ya que proporciona una visión detallada y específica de las predicciones del modelo vinculadas a factores clave. Teniendo esta predicción el equipo puede empezar a hacer una estrategia
 
 ![1702324055646](image/readme/1702324055646.png)
 
-y por ultimo el usario verá las carecteristicas más importantes
+Permitir que el usuario vea las características más importantes es una forma poderosa de involucrar al equipo y brindarles una comprensión directa de los factores que influyen en las predicciones del modelo.
 
 ![1702324094369](image/readme/1702324094369.png)
 
-La idea es que dentro de Shimoku, haya otro dashboard para el equipo interno. Por lo que vi leyendo la documentación, está muy pensado para inteligencia de negocio y usarios finales, por eso es que no quise incluir los outputs de los pipelines. Igualmente por buena práctica es bueno que se hecha pero un dashboard interno.
+La idea es implementar un dashboard adicional dentro de Shimoku dirigido al equipo interno. Después de revisar la documentación, noté que Shimoku está principalmente orientado a la inteligencia de negocio y usuarios finales. Por esta razón, he decidido no incluir los outputs de los pipelines en este nuevo dashboard. Sin embargo, es importante considerar que, como buena práctica, mantener un dashboard interno puede ser beneficioso para el equipo. Este dashboard estará enfocado en proporcionar información relevante para el equipo interno, aunque se omitirán detalles específicos de los pipelines."
