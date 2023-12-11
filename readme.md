@@ -277,11 +277,16 @@ La elección del LGBMClassifier se respalda no solo en su rendimiento general, s
 
 ![1702178946399](image/readme/1702178946399.png)
 
+
 ### Conclusión
 
 En resumen, observamos que nuestra métrica de interés, el AUC, tanto en la fase de entrenamiento como en la de prueba, muestra similitudes significativas. Este resultado indica que el modelo seleccionado, el LGBMClassifier.
 
 Además, se destaca la relevancia de la variable "duration". Aunque inicialmente no disponemos de información sobre la duración de la oferta, esta variable ha demostrado ser crucial en el proceso de modelado. La capacidad para analizar la duración ofrece un margen de maniobra valioso para comprender el comportamiento del cliente y determinar el momento óptimo para cerrar una oferta. Esta flexibilidad en el tiempo de permanencia de la oferta abierta agrega un elemento estratégico y adaptativo al proceso de toma de decisiones.
+
+### Mlflow
+
+En MLflow, organizamos los experimentos e información necesaria para entrenar el modelo. Dentro de MLflow, no solo se guarda el modelo, sino también el pipeline de preprocesamiento. La razón de uso se basa en una cultura MLOps, donde los científicos de datos apuntamos nuestros modelos a este repositorio, permitiendo que la lógica del negocio siempre obtenga el mejor modelo dependiendo de la arquitectura.
 
 # Continuación
 
