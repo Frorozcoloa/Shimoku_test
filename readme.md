@@ -1,6 +1,34 @@
 # Ejecución del código
 
-para ejecutar el código lo primero es instalar
+para ejecutar el código lo primero es instalar pip-tools
+
+```
+pip install pip-tools
+```
+
+compilamos los requierements
+
+```
+pip-compile requirements.in
+```
+
+instalamos los requirements generados
+
+```
+pip install -r requirements.txt
+```
+
+Servimos el mflow en el puerto 8004
+
+```
+mlflow server --host 127.0.0.1 --port 8084
+```
+
+ejecuatos todo el pipeline
+
+```
+python main.py
+```
 
 # Ingeniería de características
 
@@ -265,3 +293,26 @@ Además, se destaca la relevancia de la variable "duration". Aunque inicialmente
    * Se emplearán herramientas como el framework Evidently y Grafana para facilitar el monitoreo del modelo. Evidently permitirá realizar análisis detallados de la calidad del modelo, mientras que Grafana ofrecerá una interfaz visual para el seguimiento y la visualización de métricas clave. Esta combinación de herramientas mejorará la capacidad para detectar patrones inesperados o problemas de rendimiento, permitiendo ajustes y mejoras proactivas en el modelo.
 
 Este enfoque integral garantizará no solo la implementación exitosa del modelo en producción, sino también su mantenimiento y mejora continua en respuesta a los cambios en los datos y en el entorno del problema. La atención constante al monitoreo y la adaptabilidad son esenciales para asegurar que el modelo siga siendo efectivo a lo largo del tiempo.
+
+# Vista del usario final
+
+Al final el usario verá un dashboard con metadatos e información de la predición de Shimoku.
+
+al principio el usuario va a ver las predicciones positivas totales
+
+![1702323971645](image/readme/1702323971645.png)
+
+Una gráfica de pie sobre la información de las etiquetas predichas
+
+![1702324016908](image/readme/1702324016908.png)
+
+
+Una tabla con el id, la predicción y la variable más importante
+
+![1702324055646](image/readme/1702324055646.png)
+
+y por ultimo el usario verá las carecteristicas más importantes
+
+![1702324094369](image/readme/1702324094369.png)
+
+La idea es que dentro de Shimoku, haya otro dashboard para el equipo interno. Por lo que vi leyendo la documentación, está muy pensado para inteligencia de negocio y usarios finales, por eso es que no quise incluir los outputs de los pipelines. Igualmente por buena práctica es bueno que se hecha pero un dashboard interno.

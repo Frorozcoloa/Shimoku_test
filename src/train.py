@@ -170,6 +170,13 @@ def get_importance_features(best_model):
     df = pd.DataFrame({"features": features, "importance": importance})
     df = df.sort_values(by="importance", ascending=False)
     df.to_csv(datasets/"predictions"/"importance_features.csv", index=False)
+
+def plot_metrics_shimoku(shimoku_client, order: int, metrics:list):
+    """Plots the metrics in shimoku.
+    """
+    for metric in metrics:
+        shimoku_client.plt.indicator(data = metric, order=order, rows_size=2, cols_size=7)
+        order += 1
     
 def run():
     df, idx = read_dataset()
