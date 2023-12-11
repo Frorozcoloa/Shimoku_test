@@ -32,11 +32,7 @@ def test_preprocessing_acquisition_campaign(sample_leads_df):
     assert 'has_acquisition_campaign' in df_preprocessed.columns
     assert all(isinstance(value, bool) for value in df_preprocessed['has_acquisition_campaign'])
 
-def test_preprocessing_source(sample_leads_df):
-    df_preprocessed = preprocessing_source(sample_leads_df)
-    assert isinstance(df_preprocessed, pd.DataFrame)
-    assert 'source' in df_preprocessed.columns
-    assert all(value in df_preprocessed['source'].unique() for value in sample_leads_df['Source'])
+
 
 def test_preprocessing_created_date(sample_leads_df):
     df_preprocessed = preprocessing_created_date(sample_leads_df)

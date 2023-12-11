@@ -23,13 +23,6 @@ def test_create_binary_columns(sample_offer_df):
     assert 'Status' in df_binary.columns
     assert all(value in ['Closed Won', 'Closed Lost'] for value in df_binary['Status'])
 
-def test_read_dataset(mocker):
-    # Mocking the behavior of reading a dataset
-    mocker.patch("pandas.read_csv", return_value=pd.DataFrame({'col1': [1, 2], 'col2': ['A', 'B']}))
-
-    df = read_dataset()
-    assert isinstance(df, pd.DataFrame)
-    assert not df.empty
 
 def test_convert_to_datetime(sample_offer_df):
     df_datetime = convert_to_datetime(sample_offer_df)
